@@ -1,0 +1,85 @@
+CI - Continouous Integration
+
+Jenkins can be installed in many ways , Docker is one of the form .
+
+1. Login AWS 
+
+2. Launch EC2 Instance -> ubuntu -> without key pair 
+
+3. Install Docker in EC2 (installing Jenkins via docker)
+
+sudo apt update -y
+sudo apt install docker.io -y
+sudo usermod -aG docker ubuntu
+
+exit & re-connect terminal
+
+docker images
+sudo apt install docker-compose -y
+
+vi docker-compose.yml
+
+version: "3"
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    ports:
+      - "80:8080"
+
+docker-compose up -d
+docker images
+docker ps
+
+4. 
+copy the Public IP from EC2 -> paste it in chrome 
+before that edit inbound rules to -> all traffic
+
+docker exec -it jenkins sh
+ls
+
+copy the path from the Public IP (jenkins page)
+/var/jenkins_home/secrets/initialAdminPassword
+
+cat /var/jenkins_home/secrets/initialAdminPassword
+a new password is shown , copy and paste the password in Public IP/Jenkins page to login
+
+5.
+Jenkins page is openend 
+(in jenkins everything is plugins & each has its own purpose)
+
+Select --> install suggested plugin 
+select --> skip & continue as admin 
+
+jenkins Dashboard appears ; select --> create a job --> give a name -> freestyle project --> ok
+
+open the created project --> 
+
+select configure --> 
+
+5.1
+Jenkins --> Project --> Configure tab options (general ; source code management ; build triggers ; build environment; build steps; post build actions)
+
+Build environment
+=================
+
+Build steps --> Execute shell --> 
+
+echo "test" > a.txt
+ls
+
+save and click --> Build now 
+to see the file created --> click Workspace
+
+Execute shell -->
+mkdir joe
+touch a.txt
+
+build now --> & click workspace
+
+** if the files are already in workspace and build now is created it will not successfully build , so the workspace should be 
+cleared every time when the build now option is given
+2 ways --> everytime click wipeout work space (manually) or configure --> build triggers --> build environment --> delete workspace before build starts (automatially) 
+
+
+
